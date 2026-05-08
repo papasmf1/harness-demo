@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(artifacts/**)",
+      "Read(books/**)",
+      "Read(travel/**)",
+      "Read(party/**)",
+      "Read(.claude/**)",
+      "Write(artifacts/**)",
+      "Write(books/**)",
+      "Write(travel/**)",
+      "Write(party/**)",
+      "Read(budget/**)",
+      "Write(budget/**)",
+      "Bash(echo:*)"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"file_path\":.*books/'; then echo \"✅ 독서 노트 저장 완료\"; elif echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"file_path\":.*travel/progress'; then echo \"✅ 여행 준비 파일 저장 완료\"; elif echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"file_path\":.*party/plan'; then echo \"✅ 파티 계획서 저장 완료\"; elif echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"file_path\":.*budget/expense-log'; then echo \"✅ 지출 기록 완료\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
