@@ -1,6 +1,6 @@
 # harness-practice — 하네스 실습 프로젝트
 
-이 프로젝트에는 여섯 가지 하네스가 들어 있습니다.
+이 프로젝트에는 일곱 가지 하네스가 들어 있습니다.
 
 ---
 
@@ -75,6 +75,39 @@ travel/
 
 ## 3. 생일파티 기획 하네스
 
+아이 나이·예산·테마·초대 인원을 받아 아이디어 생성 → Rubric 평가 → Feedback Loop → 장소·음식·명단 → 최종 계획서 3개 파일로 완성합니다.
+
+### 실행 방법
+
+```
+/party-plan-orchestrator 아이 나이: 6세, 예산: 30만원, 테마: 공룡, 초대 인원: 15명
+```
+
+### 팀원 (Agent)
+
+| 파일 | 역할 |
+|---|---|
+| `.claude/agents/idea-generator.md` | 파티 아이디어 초안 3가지 생성 |
+| `.claude/agents/budget-evaluator.md` | Rubric 5개 기준으로 채점 + Feedback Loop |
+| `.claude/agents/venue-food-planner.md` | 장소·음식 구체화 |
+| `.claude/agents/guest-list-reviewer.md` | 초대 명단 점검 |
+| `.claude/agents/final-editor.md` | 3개 최종 파일 완성 |
+
+### 작업 매뉴얼 (Skill)
+
+`.claude/skills/party-plan-orchestrator/` — 전체 순서 + Feedback Loop 관리
+`.claude/skills/generate-party-ideas/` · `evaluate-budget/` · `plan-venue-food/` · `review-guest-list/` · `finalize-party-plan/`
+
+### 결과물
+
+```
+party/
+├── artifacts/             ← 중간 작업 파일
+├── plan.md                ← 메인 파티 계획서
+├── checklist.md           ← 준비 체크리스트 (D-14~D-Day)
+└── budget.md              ← 예산 요약
+```
+
 ---
 
 ## 4. 가족 예산 관리 하네스
@@ -113,43 +146,6 @@ budget/
 ├── expense-log.md       ← Audit Log (모든 판정 기록)
 ├── monthly-report.md    ← 월말 분석 보고서
 └── sandbox-result.md    ← 시뮬레이션 결과 (임시)
-```
-
----
-
-## 3. 생일파티 기획 하네스
-
-아이 나이·예산·테마·초대 인원을 받아 아이디어 생성 → Rubric 평가 → Feedback Loop → 장소·음식·명단 → 최종 계획서 3개 파일로 완성합니다.
-
-### 실행 방법
-
-```
-/party-plan-orchestrator 아이 나이: 6세, 예산: 30만원, 테마: 공룡, 초대 인원: 15명
-```
-
-### 팀원 (Agent)
-
-| 파일 | 역할 |
-|---|---|
-| `.claude/agents/idea-generator.md` | 파티 아이디어 초안 3가지 생성 |
-| `.claude/agents/budget-evaluator.md` | Rubric 5개 기준으로 채점 + Feedback Loop |
-| `.claude/agents/venue-food-planner.md` | 장소·음식 구체화 |
-| `.claude/agents/guest-list-reviewer.md` | 초대 명단 점검 |
-| `.claude/agents/final-editor.md` | 3개 최종 파일 완성 |
-
-### 작업 매뉴얼 (Skill)
-
-`.claude/skills/party-plan-orchestrator/` — 전체 순서 + Feedback Loop 관리
-`.claude/skills/generate-party-ideas/` · `evaluate-budget/` · `plan-venue-food/` · `review-guest-list/` · `finalize-party-plan/`
-
-### 결과물
-
-```
-party/
-├── artifacts/             ← 중간 작업 파일
-├── plan.md                ← 메인 파티 계획서
-├── checklist.md           ← 준비 체크리스트 (D-14~D-Day)
-└── budget.md              ← 예산 요약
 ```
 
 ---
@@ -243,6 +239,52 @@ hobby/
 
 ---
 
+## 7. 아침 루틴 개선 하네스
+
+아침 60분을 전날 준비·알람·옷 가방·식사·출발 시간 역산으로 나눠 종합 계획서로 완성합니다. 실패할 때마다 기록하면 Feedback Loop로 루틴이 점점 개선됩니다.
+
+### 실행 방법
+
+```
+# 처음 설정
+/morning-routine-orchestrator 설정: 출근, 기상 6:30, 출근 9:00, 지하철 30분
+
+# 실패했을 때 기록 (루틴 개선 Feedback Loop)
+/morning-routine-orchestrator 기록: 오늘 아침 옷 못 찾아서 10분 지각했어
+```
+
+### 팀원 (Agent)
+
+| 파일 | 역할 |
+|---|---|
+| `.claude/agents/morning-planner.md` | Environment Audit 체크리스트 + progress.md 반영 |
+| `.claude/agents/alarm-advisor.md` | 최적 기상 시간 + 알람 전략 |
+| `.claude/agents/outfit-checker.md` | 전날 준비할 옷·가방 체크리스트 |
+| `.claude/agents/breakfast-preparer.md` | 15분 이내 식사 계획 + 사전 준비 |
+| `.claude/agents/departure-timer.md` | 출발 시간 역산 + 분 단위 타임라인 |
+| `.claude/agents/failure-analyst.md` | 실패 원인 분류 → progress.md 누적 |
+
+### 작업 매뉴얼 (Skill)
+
+`.claude/skills/morning-routine-orchestrator/` — 전체 순서 + Feedback Loop 관리
+`.claude/skills/plan-evening-prep/` · `set-alarm-plan/` · `check-outfit-bag/` · `plan-breakfast/` · `plan-departure/` · `log-morning-failure/`
+
+### 결과물
+
+```
+morning/
+├── artifacts/
+│   ├── 00-audit.md      ← Environment Audit 체크리스트
+│   ├── 01-alarm.md      ← 알람 계획
+│   ├── 02-outfit.md     ← 옷·가방 체크리스트
+│   ├── 03-breakfast.md  ← 식사 계획
+│   └── 04-departure.md  ← 출발 시간 역산 + 타임라인
+├── plan.md              ← 종합 아침 루틴 계획서
+└── progress.md          ← 실패 원인 누적 기록 (Feedback Loop 원천)
+```
+
+---
+
 ## 전체 폴더 구조
 
 ```
@@ -254,14 +296,17 @@ harness-practice/
 │   └── artifacts/                     ← 여행 하네스 중간 파일
 ├── party/                             ← 파티 하네스 파일
 │   └── artifacts/                     ← 파티 하네스 중간 파일
+├── budget/                            ← 예산 하네스 파일
 ├── event/                             ← 행사 하네스 파일
 │   └── artifacts/                     ← 행사 하네스 중간 파일
 ├── hobby/                             ← 취미 하네스 파일
 │   └── artifacts/                     ← 취미 하네스 중간 파일
+├── morning/                           ← 아침 루틴 하네스 파일
+│   └── artifacts/                     ← 아침 루틴 하네스 중간 파일
 └── .claude/
-    ├── agents/                        ← 팀원 카드 25개
+    ├── agents/                        ← 팀원 카드 31개
     ├── settings.json                  ← Hook + Permission
-    └── skills/                        ← 작업 매뉴얼 33개
+    └── skills/                        ← 작업 매뉴얼 40개
 ```
 
 ## 테스트 프롬프트
@@ -359,4 +404,24 @@ harness-practice/
 **취미 시작 — 월간 진도 점검:**
 ```
 /hobby-plan-orchestrator 점검: 1달째. 코드 C·G·Am 익혔는데 F가 안 잡혀. 연습은 주 3회 함.
+```
+
+**아침 루틴 — 설정 (정상):**
+```
+/morning-routine-orchestrator 설정: 출근, 기상 6:30, 출근 9:00, 지하철 30분
+```
+
+**아침 루틴 — 기록 (Feedback Loop 발동):**
+```
+/morning-routine-orchestrator 기록: 오늘 아침 옷 못 찾아서 10분 지각했어
+```
+
+**아침 루틴 — 설정 재실행 (progress.md 반영 확인):**
+```
+/morning-routine-orchestrator 설정: 출근, 기상 6:30, 출근 9:00, 지하철 30분
+```
+
+**아침 루틴 — 애매함 (추가 질문이 돌아옵니다):**
+```
+/morning-routine-orchestrator 설정: 등교
 ```
